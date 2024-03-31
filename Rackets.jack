@@ -1,0 +1,76 @@
+class Rackets {
+    field int left_y, left_x, right_y, right_x;  // координаты центров левой и правой ракетки
+    field int w, h, w2, h2; // ширина и высота ракеток
+    field int speed; // скорость ракеток (в пикселях за кадр)
+    field int min_y, max_y; // крайние координаты, на которые можно сдвинуть ракетку
+
+    constructor Rackets new() {
+        let speed = 2;
+
+        let w = 10;
+        let h = 50;
+        let w2 = w / 2; // половины ширины и высоты (часто используются, так что пусть хранятся в переменной, а не считаются отдельно каждый раз)
+        let h2 = h / 2;
+        
+
+        let left_y = 256 / 2;
+        let right_y = 256 / 2;
+        
+        let left_x = 10 + (w / 2);
+        let right_x = 512 - 10 - (w / 2); 
+
+        let min_y = h2;
+        let max_y = 255 - h2 - 1;
+        
+        return this;
+    }
+
+    method void draw_left() {
+        do Screen.drawRectangle(left_x - w2, left_y - h2, left_x + w2, left_y + h2);
+        return;
+    }
+    method void draw_right() {
+        do Screen.drawRectangle(right_x - w2, right_y - h2, right_x + w2, right_y + h2);
+        return;
+    }
+    
+    method void clear_left() {
+        do Screen.setColor(false);
+        do Screen.drawRectangle(left_x - w2, left_y - h2, left_x + w2, left_y + h2);
+        do Screen.setColor(true);
+        return;
+    }
+    method void clear_right() {
+        do Screen.setColor(false);
+        do Screen.drawRectangle(right_x - w2, right_y - h2, right_x + w2, right_y + h2);
+        do Screen.setColor(true);
+        return;
+    }
+
+
+    method void move() {  // туду: дать управление только тому игроку, на чьей стороне мяч
+        var int pressed_key;
+        let pressed_key = Keyboard.keyPressed();
+        if (pressed_key = 131) {
+            do clear_right();
+            let right_y = Math.max(min_y, right_y - speed);
+            do draw_right();
+        }
+        if (pressed_key = 133) {
+            do clear_right();
+            let right_y = Math.min(max_y, right_y + speed);
+            do draw_right();
+        }
+        if (pressed_key = 87) {  // w
+            do clear_left();
+            let left_y = Math.max(min_y, left_y - speed);
+            do draw_left();
+        }
+        if (pressed_key = 83) {  // s
+            do clear_left();
+            let left_y = Math.min(max_y, left_y + speed);
+            do draw_left();
+        }
+        return;
+    }
+}

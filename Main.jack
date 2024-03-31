@@ -1,0 +1,15 @@
+class Main {
+    function void main() {
+        // do Output.printString("hello");
+        var Rackets rackets;
+        let rackets = Rackets.new();
+        
+        do rackets.draw_right();
+        do rackets.draw_left();
+        while (true) {
+            do rackets.move();
+            do Sys.wait(10); // ограничеваем fps до 100
+        }
+        return;
+    }
+}
