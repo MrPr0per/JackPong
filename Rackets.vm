@@ -4,7 +4,7 @@ call Memory.alloc 1
 pop pointer 0
 push constant 2
 pop this 8
-push constant 10
+push constant 8
 pop this 4
 push constant 50
 pop this 5
@@ -47,6 +47,58 @@ push constant 1
 sub
 pop this 10
 push pointer 0
+return
+function Rackets.get_right_surface_x 0
+push argument 0
+pop pointer 0
+push this 3
+push this 6
+sub
+return
+function Rackets.get_left_surface_x 0
+push argument 0
+pop pointer 0
+push this 1
+push this 6
+add
+return
+function Rackets.get_right_y 0
+push argument 0
+pop pointer 0
+push this 2
+return
+function Rackets.get_right_top 0
+push argument 0
+pop pointer 0
+push this 2
+push this 7
+sub
+return
+function Rackets.get_right_bot 0
+push argument 0
+pop pointer 0
+push this 2
+push this 7
+add
+return
+function Rackets.get_left_y 0
+push argument 0
+pop pointer 0
+push this 0
+return
+function Rackets.get_left_top 0
+push argument 0
+pop pointer 0
+push this 0
+push this 7
+sub
+return
+function Rackets.get_left_bot 0
+push argument 0
+pop pointer 0
+push this 0
+push this 7
+add
 return
 function Rackets.draw_left 0
 push argument 0
@@ -92,19 +144,8 @@ pop pointer 0
 push constant 0
 call Screen.setColor 1
 pop temp 0
-push this 1
-push this 6
-sub
-push this 0
-push this 7
-sub
-push this 1
-push this 6
-add
-push this 0
-push this 7
-add
-call Screen.drawRectangle 4
+push pointer 0
+call Rackets.draw_left 1
 pop temp 0
 push constant 0
 not
@@ -118,19 +159,8 @@ pop pointer 0
 push constant 0
 call Screen.setColor 1
 pop temp 0
-push this 3
-push this 6
-sub
-push this 2
-push this 7
-sub
-push this 3
-push this 6
-add
-push this 2
-push this 7
-add
-call Screen.drawRectangle 4
+push pointer 0
+call Rackets.draw_right 1
 pop temp 0
 push constant 0
 not
@@ -138,7 +168,7 @@ call Screen.setColor 1
 pop temp 0
 push constant 0
 return
-function Rackets.move 1
+function Rackets.update 1
 push argument 0
 pop pointer 0
 call Keyboard.keyPressed 0

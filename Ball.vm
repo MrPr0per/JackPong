@@ -1,0 +1,247 @@
+function Ball.new 0
+push constant 7
+call Memory.alloc 1
+pop pointer 0
+push constant 512
+push constant 2
+call Math.divide 2
+pop this 0
+push constant 256
+push constant 2
+call Math.divide 2
+pop this 1
+push constant 4
+pop this 2
+push constant 1
+pop this 3
+push constant 2
+neg
+pop this 4
+push constant 60
+pop this 5
+push this 5
+pop this 6
+push pointer 0
+return
+function Ball.draw 0
+push argument 0
+pop pointer 0
+push this 0
+push this 2
+sub
+push this 1
+push this 2
+sub
+push this 0
+push this 2
+add
+push this 1
+push this 2
+add
+call Screen.drawRectangle 4
+pop temp 0
+push constant 0
+return
+function Ball.clear 0
+push argument 0
+pop pointer 0
+push constant 0
+call Screen.setColor 1
+pop temp 0
+push pointer 0
+call Ball.draw 1
+pop temp 0
+push constant 0
+not
+call Screen.setColor 1
+pop temp 0
+push constant 0
+return
+function Ball.update 3
+push argument 0
+pop pointer 0
+push this 0
+push this 3
+add
+pop local 0
+push this 1
+push this 4
+add
+pop local 1
+push this 6
+push constant 0
+gt
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push this 6
+push constant 1
+sub
+pop this 6
+push constant 0
+return
+label IF_FALSE0
+push pointer 0
+call Ball.clear 1
+pop temp 0
+push local 1
+push this 2
+lt
+push local 1
+push constant 255
+push this 2
+sub
+gt
+or
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push this 4
+neg
+pop this 4
+push this 1
+push this 4
+add
+pop local 1
+label IF_FALSE1
+push local 0
+push this 2
+add
+push constant 1
+add
+push argument 1
+call Rackets.get_right_surface_x 1
+gt
+push local 1
+push this 2
+add
+push argument 1
+call Rackets.get_right_top 1
+gt
+and
+push local 1
+push this 2
+sub
+push argument 1
+call Rackets.get_right_bot 1
+lt
+and
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push this 3
+neg
+push constant 1
+sub
+pop this 3
+push this 0
+push this 3
+add
+pop local 0
+label IF_FALSE2
+push local 0
+push this 2
+sub
+push constant 1
+sub
+push argument 1
+call Rackets.get_left_surface_x 1
+lt
+push local 1
+push this 2
+add
+push argument 1
+call Rackets.get_left_top 1
+gt
+and
+push local 1
+push this 2
+sub
+push argument 1
+call Rackets.get_left_bot 1
+lt
+and
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push this 3
+neg
+push constant 1
+add
+pop this 3
+push this 0
+push this 3
+add
+pop local 0
+label IF_FALSE3
+push local 0
+push this 2
+add
+push constant 1
+add
+push constant 512
+gt
+if-goto IF_TRUE4
+goto IF_FALSE4
+label IF_TRUE4
+push constant 512
+push constant 2
+call Math.divide 2
+pop this 0
+push constant 256
+push constant 2
+call Math.divide 2
+pop this 1
+push constant 1
+neg
+pop this 3
+push constant 2
+pop this 4
+push this 5
+pop this 6
+push argument 2
+call Score.inc_left 1
+pop temp 0
+label IF_FALSE4
+push local 0
+push this 2
+sub
+push constant 1
+sub
+push constant 0
+lt
+if-goto IF_TRUE5
+goto IF_FALSE5
+label IF_TRUE5
+push constant 512
+push constant 2
+call Math.divide 2
+pop this 0
+push constant 256
+push constant 2
+call Math.divide 2
+pop this 1
+push constant 1
+pop this 3
+push constant 2
+neg
+pop this 4
+push this 5
+pop this 6
+push argument 2
+call Score.inc_right 1
+pop temp 0
+label IF_FALSE5
+push this 0
+push this 3
+add
+pop this 0
+push this 1
+push this 4
+add
+pop this 1
+push pointer 0
+call Ball.draw 1
+pop temp 0
+push constant 0
+return

@@ -1,19 +1,37 @@
-function Main.main 1
+function Main.main 3
 call Rackets.new 0
 pop local 0
+call Ball.new 0
+pop local 1
+call Score.new 0
+pop local 2
 push local 0
 call Rackets.draw_right 1
 pop temp 0
 push local 0
 call Rackets.draw_left 1
 pop temp 0
+push local 1
+call Ball.draw 1
+pop temp 0
 label WHILE_EXP0
 push constant 0
 not
 not
 if-goto WHILE_END0
+push local 2
+call Score.draw 1
+pop temp 0
 push local 0
-call Rackets.move 1
+call Rackets.update 1
+pop temp 0
+push local 1
+push local 0
+push local 2
+call Ball.update 3
+pop temp 0
+push constant 15
+call Sys.wait 1
 pop temp 0
 goto WHILE_EXP0
 label WHILE_END0

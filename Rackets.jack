@@ -7,7 +7,7 @@ class Rackets {
     constructor Rackets new() {
         let speed = 2;
 
-        let w = 10;
+        let w = 8;
         let h = 50;
         let w2 = w / 2; // половины ширины и высоты (часто используются, так что пусть хранятся в переменной, а не считаются отдельно каждый раз)
         let h2 = h / 2;
@@ -25,6 +25,32 @@ class Rackets {
         return this;
     }
 
+    method int get_right_surface_x() { // возвращает x-координату поверхности правой ракетки (от которой отскакивает мячик)
+        return right_x - w2;
+    }
+    method int get_left_surface_x() { // возвращает x-координату поверхности правой ракетки (от которой отскакивает мячик)
+        return left_x + w2;
+    }
+    method int get_right_y() {
+        return right_y;
+    }
+    method int get_right_top() {
+        return right_y - h2;
+    }
+    method int get_right_bot() {
+        return right_y + h2;
+    }
+    method int get_left_y() {
+        return left_y;
+    }
+    method int get_left_top() {
+        return left_y - h2;
+    }
+    method int get_left_bot() {
+        return left_y + h2;
+    }
+    
+
     method void draw_left() {
         do Screen.drawRectangle(left_x - w2, left_y - h2, left_x + w2, left_y + h2);
         return;
@@ -36,19 +62,22 @@ class Rackets {
     
     method void clear_left() {
         do Screen.setColor(false);
-        do Screen.drawRectangle(left_x - w2, left_y - h2, left_x + w2, left_y + h2);
+        do draw_left();
         do Screen.setColor(true);
         return;
     }
     method void clear_right() {
         do Screen.setColor(false);
-        do Screen.drawRectangle(right_x - w2, right_y - h2, right_x + w2, right_y + h2);
+        do draw_right();
         do Screen.setColor(true);
         return;
     }
 
 
-    method void move() {  // туду: дать управление только тому игроку, на чьей стороне мяч
+    method void update() {
+        // туду: дать управление только тому игроку, в кого летит мяч
+        // туду: ускорять мяч в направлении движения
+        // туду: ускорять мяч не более 4-6 раз
         var int pressed_key;
         let pressed_key = Keyboard.keyPressed();
         if (pressed_key = 131) {

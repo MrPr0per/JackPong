@@ -1,0 +1,76 @@
+class Score {
+    field int left_score, right_score;
+    field int max_score;
+
+    constructor Score new() {
+        let max_score = 3;
+
+        let left_score = 0;
+        let right_score = 0;
+        
+        return this;
+    }
+
+    method void inc_left() {
+        let left_score = left_score + 1;
+        if (left_score > (max_score - 1)) {
+            do wins(true);
+        }
+        return;
+    }
+    method void inc_right() {
+        let right_score = right_score + 1;
+        if (right_score > (max_score - 1)) {
+            do wins(false);
+        }
+        return;
+    }
+
+    method void wins(boolean is_left_wins) {
+        do draw();
+        do Output.moveCursor(3, 26);
+        if (is_left_wins) { 
+            do Output.printString("left wins!"); 
+        }
+        else { 
+            do Output.printString("right wins!"); 
+        }
+        do Sys.wait(4000);
+        let left_score = 0;
+        let right_score = 0;
+        do Output.moveCursor(3, 26);
+        do Output.printString("           ");
+        return;
+    }
+
+    // method void left_wins() {
+    //     do draw();
+    //     do Output.moveCursor(3, 26);
+    //     do Output.printString("left wins!");
+    //     do Sys.wait(4000);
+    //     let left_score = 0;
+    //     let right_score = 0;
+    //     do Output.moveCursor(3, 26);
+    //     do Output.printString("          ");
+    //     return;
+    // }
+    // method void right_wins() {
+    //     do draw();
+    //     do Output.moveCursor(3, 26);
+    //     do Output.printString("right wins!");
+    //     do Sys.wait(4000);
+    //     let left_score = 0;
+    //     let right_score = 0;
+    //     do Output.moveCursor(3, 26);
+    //     do Output.printString("           ");
+    //     return;
+    // }
+
+    method void draw() {
+        do Output.moveCursor(3, 16);
+        do Output.printInt(left_score);
+        do Output.moveCursor(3, 47);
+        do Output.printInt(right_score);
+        return;
+    }
+}   

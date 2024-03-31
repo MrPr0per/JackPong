@@ -1,14 +1,23 @@
+// ревьюеры, не судите код строго :3
+// на него было выделено 2 недели, из которых свободных было 2 дня 
+
 class Main {
     function void main() {
-        // do Output.printString("hello");
         var Rackets rackets;
+        var Ball ball;
+        var Score score;
         let rackets = Rackets.new();
-        
+        let ball = Ball.new();
+        let score = Score.new();
+
         do rackets.draw_right();
         do rackets.draw_left();
+        do ball.draw();
         while (true) {
-            do rackets.move();
-            do Sys.wait(10); // ограничеваем fps до 100
+            do score.draw();
+            do rackets.update();
+            do ball.update(rackets, score);
+            do Sys.wait(15); // ограничеваем fps
         }
         return;
     }

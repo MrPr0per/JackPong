@@ -1,0 +1,88 @@
+class Ball {
+    field int x, y, r; // координаты, радиус
+    field int speed_x, speed_y; // скорость по горизонтали и вертикали
+    field int max_frames_to_launch, frames_to_launch; // после гола мяч остается в центре max_frames_to_launch кадров
+
+    constructor Ball new() {
+        let x = 512 / 2;
+        let y = 256 / 2;
+        let r = 4;
+
+        let speed_x = 1;
+        let speed_y = -2;
+
+        let max_frames_to_launch = 60;
+        let frames_to_launch = max_frames_to_launch;
+        
+        return this;
+    }
+
+    // method void set_speed(int new_speed_x, int new_speed_y) {
+    //     let speed_x = new_speed_x;
+    //     let speed_y = new_speed_y;
+    // }
+    
+
+    method void draw() {
+        do Screen.drawRectangle(x - r, y - r, x + r, y + r);
+        return;
+    }
+    
+    method void clear() {
+        do Screen.setColor(false);
+        do draw();
+        do Screen.setColor(true);
+        return;
+    }
+
+    method void update(Rackets rackets, Score score) {  // если забили правому - вернет 1, левому - -1, никому - 0
+        var int next_x;
+        var int next_y;
+        var int result;
+        let next_x = x + speed_x;
+        let next_y = y + speed_y;
+
+        if (frames_to_launch > 0) {
+            let frames_to_launch = frames_to_launch - 1;
+            return;
+        }
+
+        do clear();
+        
+        if ((next_y < r) | (next_y > (255 - r))) {
+            let speed_y = -speed_y;
+            let next_y = y + speed_y;
+        }
+        if (((next_x + r + 1) > rackets.get_right_surface_x()) & (next_y + r > rackets.get_right_top()) & (next_y - r < rackets.get_right_bot())) {
+            let speed_x = -speed_x - 1;
+            let next_x = x + speed_x;
+        }
+        if (((next_x - r - 1) < rackets.get_left_surface_x()) & (next_y + r > rackets.get_left_top()) & (next_y - r < rackets.get_left_bot())) {
+            let speed_x = -speed_x + 1;
+            let next_x = x + speed_x;
+        }
+        
+        if ((next_x + r + 1) > 512) {
+            let x = 512 / 2;
+            let y = 256 / 2;
+            let speed_x = -1;
+            let speed_y = 2;
+            let frames_to_launch = max_frames_to_launch;
+            do score.inc_left();
+        } 
+        if ((next_x - r - 1) < 0) {
+            let x = 512 / 2;
+            let y = 256 / 2;
+            let speed_x = 1;
+            let speed_y = -2;
+            let frames_to_launch = max_frames_to_launch;
+            do score.inc_right();
+        } 
+
+        let x = x + speed_x;
+        let y = y + speed_y;
+
+        do draw();
+        return;
+    }
+}
