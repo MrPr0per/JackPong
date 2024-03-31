@@ -13,6 +13,7 @@ class Main {
         do rackets.draw_right();
         do rackets.draw_left();
         do ball.draw();
+        do rackets.draw_net();
         while (true) {
             do score.draw();
             do rackets.update();

@@ -14,6 +14,9 @@ pop temp 0
 push local 1
 call Ball.draw 1
 pop temp 0
+push local 0
+call Rackets.draw_net 1
+pop temp 0
 label WHILE_EXP0
 push constant 0
 not

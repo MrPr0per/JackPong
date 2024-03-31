@@ -5,7 +5,7 @@ class Rackets {
     field int min_y, max_y; // крайние координаты, на которые можно сдвинуть ракетку
 
     constructor Rackets new() {
-        let speed = 2;
+        let speed = 3;
 
         let w = 8;
         let h = 50;
@@ -75,9 +75,6 @@ class Rackets {
 
 
     method void update() {
-        // туду: дать управление только тому игроку, в кого летит мяч
-        // туду: ускорять мяч в направлении движения
-        // туду: ускорять мяч не более 4-6 раз
         var int pressed_key;
         let pressed_key = Keyboard.keyPressed();
         if (pressed_key = 131) {
@@ -99,6 +96,18 @@ class Rackets {
             do clear_left();
             let left_y = Math.min(max_y, left_y + speed);
             do draw_left();
+        }
+        return;
+    }
+
+    method void draw_net() {
+        var int y;
+        var int step;
+        let y = 0;
+        let step = 5;
+        while (y + step < 255) {
+            do Screen.drawLine(512 / 2, y, 512 / 2, y + step);
+            let y = y + (step * 2);
         }
         return;
     }

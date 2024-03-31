@@ -1,13 +1,16 @@
 class Ball {
     field int x, y, r; // координаты, радиус
     field int speed_x, speed_y; // скорость по горизонтали и вертикали
+    field int max_x_speed, max_y_speed; // максимальная скорость (ее абсолютное значение)
     field int max_frames_to_launch, frames_to_launch; // после гола мяч остается в центре max_frames_to_launch кадров
 
     constructor Ball new() {
         let x = 512 / 2;
         let y = 256 / 2;
         let r = 4;
-
+        
+        let max_x_speed = 2;
+        let max_y_speed = 5;
         let speed_x = 1;
         let speed_y = -2;
 
@@ -16,12 +19,6 @@ class Ball {
         
         return this;
     }
-
-    // method void set_speed(int new_speed_x, int new_speed_y) {
-    //     let speed_x = new_speed_x;
-    //     let speed_y = new_speed_y;
-    // }
-    
 
     method void draw() {
         do Screen.drawRectangle(x - r, y - r, x + r, y + r);
@@ -35,12 +32,13 @@ class Ball {
         return;
     }
 
-    method void update(Rackets rackets, Score score) {  // если забили правому - вернет 1, левому - -1, никому - 0
+    method void update(Rackets rackets, Score score) {
         var int next_x;
         var int next_y;
-        var int result;
+        var char pressed_key;
         let next_x = x + speed_x;
         let next_y = y + speed_y;
+        let pressed_key = Keyboard.keyPressed();
 
         if (frames_to_launch > 0) {
             let frames_to_launch = frames_to_launch - 1;
@@ -49,20 +47,61 @@ class Ball {
 
         do clear();
         
+        // фиксим проблемы отрисовки, связанные со стиранием мячика
+        if ((x + r + 1 > (512 / 2)) & (x - r - 1 < (512 / 2))) {
+            // если мяч пересекает сетку
+            do rackets.draw_net();
+        }
+        if (x + r + 1 > rackets.get_right_surface_x()) {
+            // если мяч за правой ракеткой
+            do rackets.draw_right();
+        }
+        if (x - r - 1 < rackets.get_left_surface_x()) {
+            // если мяч за левой ракеткой
+            do rackets.draw_left();
+        }
+        // счет перерисовывается каждый кадр, тк пересечение его с мячем вычислить не так просто
+        
+
+        
+
+        if (((next_x + r + 1) > rackets.get_right_surface_x()) & (next_y + r > rackets.get_right_top()) & (next_y - r < rackets.get_right_bot())) {
+            // если правый отразил мяч
+            let speed_x = Math.max(-Math2.abs(speed_x) - 1, -max_x_speed);
+            let next_x = x + speed_x;
+
+            // если ракетка игрока движется во время отбивания мяча, то мяч увеличит скорость по направлению ракетки
+            if (pressed_key = 131) { 
+                let speed_y = Math.max(speed_y - 1, -max_y_speed);    
+            }
+            if (pressed_key = 133) {
+                let speed_y = Math.min(speed_y + 1, max_y_speed);    
+            }
+            let next_y = y + speed_y;
+
+        }
+        if (((next_x - r - 1) < rackets.get_left_surface_x()) & (next_y + r > rackets.get_left_top()) & (next_y - r < rackets.get_left_bot())) {
+            // если левый отразил мяч
+            let speed_x = Math.min(Math2.abs(speed_x) + 1, max_x_speed);
+            let next_x = x + speed_x;
+
+            if (pressed_key = 87) { 
+                let speed_y = Math.max(speed_y - 1, -max_y_speed);    
+            }
+            if (pressed_key = 83) {
+                let speed_y = Math.min(speed_y + 1, max_y_speed);    
+            }
+            let next_y = y + speed_y;
+        }
+
         if ((next_y < r) | (next_y > (255 - r))) {
+            // если мяч отскочил от верхней или нижней границы
             let speed_y = -speed_y;
             let next_y = y + speed_y;
         }
-        if (((next_x + r + 1) > rackets.get_right_surface_x()) & (next_y + r > rackets.get_right_top()) & (next_y - r < rackets.get_right_bot())) {
-            let speed_x = -speed_x - 1;
-            let next_x = x + speed_x;
-        }
-        if (((next_x - r - 1) < rackets.get_left_surface_x()) & (next_y + r > rackets.get_left_top()) & (next_y - r < rackets.get_left_bot())) {
-            let speed_x = -speed_x + 1;
-            let next_x = x + speed_x;
-        }
-        
+
         if ((next_x + r + 1) > 512) {
+            // если правому забили гол
             let x = 512 / 2;
             let y = 256 / 2;
             let speed_x = -1;
@@ -71,6 +110,7 @@ class Ball {
             do score.inc_left();
         } 
         if ((next_x - r - 1) < 0) {
+            // если левому забили гол
             let x = 512 / 2;
             let y = 256 / 2;
             let speed_x = 1;

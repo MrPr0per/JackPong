@@ -28,6 +28,7 @@ class Score {
 
     method void wins(boolean is_left_wins) {
         do draw();
+        do Output.printString("           "); // очищаем фон за текстом от сетки
         do Output.moveCursor(3, 26);
         if (is_left_wins) { 
             do Output.printString("left wins!"); 
@@ -42,29 +43,6 @@ class Score {
         do Output.printString("           ");
         return;
     }
-
-    // method void left_wins() {
-    //     do draw();
-    //     do Output.moveCursor(3, 26);
-    //     do Output.printString("left wins!");
-    //     do Sys.wait(4000);
-    //     let left_score = 0;
-    //     let right_score = 0;
-    //     do Output.moveCursor(3, 26);
-    //     do Output.printString("          ");
-    //     return;
-    // }
-    // method void right_wins() {
-    //     do draw();
-    //     do Output.moveCursor(3, 26);
-    //     do Output.printString("right wins!");
-    //     do Sys.wait(4000);
-    //     let left_score = 0;
-    //     let right_score = 0;
-    //     do Output.moveCursor(3, 26);
-    //     do Output.printString("           ");
-    //     return;
-    // }
 
     method void draw() {
         do Output.moveCursor(3, 16);
